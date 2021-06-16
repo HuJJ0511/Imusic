@@ -26,5 +26,9 @@ export default {
 </script>
 
 <style>
-
+.musicView{
+  height: 680px;
+  width: 100%;
+  overflow-y: scroll;
+}
 </style>

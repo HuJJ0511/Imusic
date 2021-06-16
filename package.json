@@ -9,9 +9,13 @@
   "dependencies": {
     "axios": "^0.21.1",
     "core-js": "^3.6.5",
+    "default-passive-events": "^2.0.0",
     "element-ui": "^2.15.1",
+    "video.js": "^7.12.3",
+    "vodal": "^2.4.0",
     "vue": "^2.6.11",
     "vue-router": "^3.5.1",
+    "vue-video-player": "^5.0.2",
     "vuex": "^3.6.2"
   },
   "devDependencies": {

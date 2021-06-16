@@ -1,17 +1,17 @@
 <template>
     <el-aside width="200px">
       <el-scrollbar class="page-srcoll">
-        <el-collapse accordion>
-          <el-collapse-item>
+        <el-collapse v-model="activeName" accordion>
+          <el-collapse-item name="1">
             <template slot="title"> 
               在线音乐
             </template>
-            <div v-for="item in cetgory" @click="clickName(item.clickName)">
+            <div v-for="(item,index) in cetgory" @click="clickName(item.clickName)" :key="index">
               <span>{{item.name}}</span>
             </div>
           </el-collapse-item>
 
-          <el-collapse-item title="我的音乐">
+          <el-collapse-item title="我的音乐" name="2">
             <div><span>我喜欢</span></div>
             <div><span>本地和下载</span></div>
             <div><span>播放历史</span></div>
@@ -19,12 +19,12 @@
             <div><span>已购音乐</span></div>
           </el-collapse-item>
           
-          <el-collapse-item title="创建的歌单">
+          <el-collapse-item title="创建的歌单" name="3">
             <div><span>靓仔才听的歌</span></div>
             <div><span>夜半曲库</span></div>
             <div><span>非主流日记</span></div>
           </el-collapse-item>
-          <el-collapse-item title="收藏的歌单">
+          <el-collapse-item title="收藏的歌单" name="4"> 
             <div><span>抖音红曲</span></div>
             <div><span>抖音红曲</span></div>
             <div><span>抖音红曲</span></div>
@@ -40,7 +40,6 @@
             <div><span>抖音红曲</span></div>
             <div><span>抖音红曲</span></div>
             <div><span>抖音红曲</span></div>
-       
           </el-collapse-item>
         </el-collapse>
       </el-scrollbar>

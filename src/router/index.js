@@ -11,6 +11,8 @@ import vedios from 'views/center/right/vedios/VediosView'
 import radios from 'views/center/right/radios/RadiosView'
 import search from 'components/content/search'
 import detail from 'components/content/detail'
+import songmv from 'components/content/songMv'
+import songlist from 'components/content/songList'
 
 Vue.use(VueRouter)
 
@@ -21,7 +23,7 @@ const routes = [
   },
   {
     path: '/home',
-    name: '/home',
+    name: 'home',
     component: Home,
     children:[
       {
@@ -48,29 +50,45 @@ const routes = [
   },
   {
     path: '/vedios',
-    name: '/vedios',
+    name: 'vedios',
     component: vedios
   },
   {
     path: '/radios',
-    name: '/radios',
+    name: 'radios',
     component: radios
   },
   {
     path: '/search:keyWords',
-    name: '/search',
+    name: 'search',
     component: search
   },
   {
     path: '/detail',
     name: '/detail',
-    component: detail
+    component: detail,
+    meta: {
+      keepAlive: true
+    }
+  },
+  {
+    path: '/songmv',
+    name: '/songmv',
+    component: songmv
+  },
+  {
+    path: '/songlist',
+    name: 'songlist',
+    component: songlist,
+    meta: {
+      keepAlive: true
+    }
   }
 ]
 
 const router = new VueRouter({
   mode:'history',
-  routes
+  routes,
 })
 
 export default router

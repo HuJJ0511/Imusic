@@ -46,7 +46,7 @@
            <div class="sbox"><el-button type="info" plain class="btn-left">倍数</el-button></div>
            <div  class="sbox"><el-button type="info" plain>标准</el-button></div>
            <div class="sbox bell-block">
-             <div class="el-icon-bell"></div>
+             <div :class="[SongVolume == 0?'el-icon-close-notification':'el-icon-bell']"></div>
              <div class="block">
               <el-slider v-model="SongVolume" vertical height="80px" @change="changeVolume"/>
              </div>
@@ -77,12 +77,18 @@ export default {
       duration: null,//歌曲总时长
       currentTime: null,//歌曲实时时间
       SongVolume: 30,//默认音量
+      album: null,//专辑名称
+      mv: null//mv
     }
   },
   mounted(){
     this.$bus.$on('getMusicId',res => {
-      this.iid = res
+        this.iid = res
       console.log(this.iid)
+    })
+    this.$bus.$on('getActive',() => {
+      this.isActive = true
+      this.$refs.audio.pause()
     })
   },
   watch:{
@@ -91,6 +97,7 @@ export default {
     },
     currentTime(){
       this.getOverTime()
+      this.$bus.$emit("getCurrentTime",this.currentTime)
     }
   },
   methods:{
@@ -113,12 +120,17 @@ export default {
         this.isActive = false;
         getSongDetail(iid).then(res => {
           this.songName = res.songs[0].name
-          this.singer = res.songs[0].ar[0].name
+          // this.singer = res.songs[0].ar[0].name
+          let singerObj = []
+          res.songs[0].ar.forEach(element => {
+            singerObj.push(element.name)
+          })
+          this.singer = singerObj.join('/')
           this.songImg = res.songs[0].al.picUrl
-          console.log(this.songName + "-" + this.singer)
           this.duration = this.$refs.audio.duration
           this.currentTime = this.$refs.audio.currentTime
-          console.log(this.currentTime + "/" + this.duration)
+          this.album = res.songs[0].al.name
+          this.mv = res.songs[0].mv
           this.isSong = true
           console.log(res)
         })
@@ -146,13 +158,17 @@ export default {
     },
     getDetail(){
       this.$router.push({
-        name:'/detail',
+        name: '/detail',
         params:{
-          id:this.iid,
-          img:this.songImg
+          id: this.iid,
+          img: this.songImg,
+          songName: this.songName,
+          singer: this.singer,
+          album: this.album,
+          mv: this.mv
         }
       }).catch(err => err)
-    }
+    },
   },
   filters:{
     showTime(value){

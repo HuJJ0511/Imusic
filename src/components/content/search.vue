@@ -12,9 +12,9 @@
           </el-table-column>
           <el-table-column label="歌曲" property="name" width="250">
           </el-table-column>
-          <el-table-column label="歌手" property="artists[0].name" width="200">
+          <el-table-column label="歌手" property="singer" width="200">
           </el-table-column>
-          <el-table-column label="专辑" property="album.name" width="200">
+          <el-table-column label="专辑" property="album" width="200">
           </el-table-column>
           <el-table-column label="时长" property="duration">
             <template scope="scope">
@@ -34,7 +34,7 @@ export default {
     return{
       keyWords: "",
       songCount: 0,
-      songs: []
+      songs: [],
     }
   },
   created(){
@@ -47,6 +47,7 @@ export default {
       if(this.keyWords != ""){
         console.log("我是第N次搜索！！")
         this.keyWords = this.$route.params.keyWords
+        this.songs = []
         this.getSearchAll()
       }
     }
@@ -57,7 +58,19 @@ export default {
       getSearchAll(this.keyWords).then(res => {
         console.log(res)
         this.songCount = res.result.songCount
-        this.songs = res.result.songs
+        res.result.songs.forEach(element => {
+          let result = []
+          result.id = element.id
+          result.name = element.name
+          result.album = element.album.name
+          let singerObj = []
+          element.artists.forEach(value => {
+            singerObj.push(value.name)
+          })
+          result.singer = singerObj.join('/')
+          result.duration = element.duration
+          this.songs.push(result)
+        });
       })
     },
     handleCurrentChange(val) {
@@ -76,7 +89,13 @@ export default {
       //将date进行格式化
       return getTime(date)
     }
-  }
+  },
+  beforeRouteEnter(to, from, next) {
+    if (from.name === "/detail") {
+      from.meta.keepAlive = false;
+    }
+    next();
+  },
 }
 </script>
 

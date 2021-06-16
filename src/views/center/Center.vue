@@ -2,7 +2,11 @@
   <el-container class="center">
     <mian-aside></mian-aside>
     <div class="right">
-         <router-view />
+
+      <keep-alive>
+        <router-view v-if="$route.meta.keepAlive"></router-view>
+      </keep-alive>
+      <router-view v-if="!$route.meta.keepAlive"></router-view>
     </div>
   </el-container>
 </template>
