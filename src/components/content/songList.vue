@@ -41,7 +41,7 @@
     </div>
     <div class="song-list-content">
       <el-tabs v-model="activeName" @tab-click="handleClick">
-        <el-tab-pane label="歌曲" name="first">
+        <el-tab-pane :label="'歌曲' + songListTotal" name="first">
           <el-table :data="songlistSongs" style="width: 100%"  @row-click="getMusicId" :lazy="true">
             <el-table-column property="name" label="歌曲" width="250">
             </el-table-column>
@@ -57,7 +57,9 @@
           </el-table>
         </el-tab-pane>
 
-        <el-tab-pane label="评论" name="second">评论</el-tab-pane>
+        <el-tab-pane label="评论" name="second">
+          
+        </el-tab-pane>
       </el-tabs>
     </div>
   </div>
@@ -75,16 +77,18 @@ export default {
       creator: [],
       activeName: 'first',
       trackIds: [],
-      songlistSongs: []
+      songlistSongs: [],
+      songListTotal: 0
     }
   },
   created(){
     // const songListId = this.$route.params.songListId
+    //获取推荐歌单详情
     getSongList(this.$route.params.songListId).then(res => {
       this.songlist = res.playlist
       this.creator = res.playlist.creator
       this.trackIds = res.playlist.trackIds
-      // console.log(this.trackIds)
+      console.log(res)
       this.getTrackIds()
     })
   },
@@ -94,6 +98,7 @@ export default {
     handleClick(tab, event) {
       console.log(tab, event);
     },
+    //获取推荐歌单的歌曲
     getTrackIds(){
       this.trackIds.forEach(element => {
         let trackIdsObj = {}
@@ -108,6 +113,7 @@ export default {
           trackIdsObj.singer = singerObj.join('/')
           trackIdsObj.duration = res.songs[0].dt
           this.songlistSongs.push(trackIdsObj);
+          this.songListTotal = this.songlistSongs.length
         })
       })
     },

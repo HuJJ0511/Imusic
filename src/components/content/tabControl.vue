@@ -19,6 +19,11 @@ export default {
       activeName: '/home/recommend'
     };
   },
+  mounted(){
+    this.$bus.$on('ChangeTab',() => {
+      this.activeName = '/home/songs'
+    })
+  },
   methods: {
      handleClick(tab, event,name) {
       this.$router.replace(tab.name);

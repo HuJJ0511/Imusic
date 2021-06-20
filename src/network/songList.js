@@ -8,3 +8,14 @@ export function getSongList(id){
     }
   })
 }
+
+export function getSongListPlayList(id,limit,offset){
+  return request({
+    url: '/comment/playlist',
+    params:{
+      id,
+      limit,
+      offset
+    }
+  })
+}

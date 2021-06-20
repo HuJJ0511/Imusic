@@ -3,7 +3,7 @@
     <div class="personalized-top">
       <div class="top-frist">官方歌单</div>
       <div class="top-second">官方甄选订阅歌单</div>
-      <div class="top-third"><a herf="#">更多</a></div>
+      <div class="top-third" @click="goSongList">更多</div>
     </div>
     <div class="personalized-context">
       <div class="personalized-item" v-for="(item,index) in personalized" :key="index">
@@ -47,6 +47,10 @@ export default {
       // getSongList(id).then(res => {
       //   console.log(res)
       // })
+    },
+    goSongList(){
+      this.$bus.$emit('ChangeTab')
+      this.$router.push('/home/songs')
     }
   }
 }
