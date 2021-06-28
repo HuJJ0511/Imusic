@@ -58,7 +58,15 @@
         </el-tab-pane>
 
         <el-tab-pane label="评论" name="second">
-          
+          <div class="diyComment">
+            <textarea placeholder="发表你的听后感！！！"></textarea>
+            <div class="Comment-btn">
+              <div>
+                <div><img src="~assets/images/songList/Smilie.png" alt=""></div>
+                <input type="button" value="发表"></input>
+              </div>
+            </div>
+          </div>
         </el-tab-pane>
       </el-tabs>
     </div>
@@ -66,7 +74,7 @@
 </template>
 
 <script>
-import { getSongList } from 'network/songList'
+import { getSongList,getSongListPlayList } from 'network/songList'
 import { formatDate,getTime } from 'common/utils'
 import { getSongDetail } from 'network/home'
 
@@ -82,14 +90,18 @@ export default {
     }
   },
   created(){
-    // const songListId = this.$route.params.songListId
+    const songListId = this.$route.params.songListId
     //获取推荐歌单详情
-    getSongList(this.$route.params.songListId).then(res => {
+    getSongList(songListId).then(res => {
       this.songlist = res.playlist
       this.creator = res.playlist.creator
       this.trackIds = res.playlist.trackIds
       console.log(res)
       this.getTrackIds()
+    })
+    //获取歌单评论
+    getSongListPlayList(songListId).then(res => {
+      console.log(res)
     })
   },
   mounted(){
@@ -100,7 +112,7 @@ export default {
     },
     //获取推荐歌单的歌曲
     getTrackIds(){
-      this.trackIds.forEach(element => {
+      this.trackIds.forEach((element,index) => {
         let trackIdsObj = {}
         getSongDetail(element.id).then(res => {
           trackIdsObj.id = res.songs[0].id
@@ -113,9 +125,11 @@ export default {
           trackIdsObj.singer = singerObj.join('/')
           trackIdsObj.duration = res.songs[0].dt
           this.songlistSongs.push(trackIdsObj);
-          this.songListTotal = this.songlistSongs.length
+          // this.songListTotal = this.songlistSongs.length
+          this.songListTotal = index == this.trackIds.length - 1 ? this.songlistSongs.length : 0;
         })
       })
+      console.log(this.songListTotal)
     },
     getMusicId(row){
       console.log(row)
@@ -234,6 +248,54 @@ export default {
 .song-list-content{
   width: 100%;
   height: 600px;
+}
+.diyComment{
+  width: 100%;
+  height: 100px;
+  background-color: rgba(255, 255, 255, .6);
+  padding: 10px;
+}
+.diyComment textarea{
+  width: 100%;
+  height: 60px;
+  resize: none;
+  border: 0;
+  background-color: rgba(255, 255, 255, 0);
+  font-size: 14px;
+}
+textarea:focus{
+  outline: none;
+}
+.Comment-btn{
+  display: flex;
+  width: 100%;
+  height: 30px;
+  position: absolute;
+}
+.Comment-btn>div{
+  display: flex;
+  position: relative;
+  left: 860px;
+}
+.Comment-btn>div>div{
+  height: 26px;
+  width: 26px;
+}
+.Comment-btn>div>div img{
+  height: 100%;
+  width: 100%;
+  cursor: pointer;
+}
+.Comment-btn>div>input{
+  cursor: pointer;
+  height: 26px;
+  width: 60px;
+  margin-left: 15px;
+  color: rgb(102,102,102);
+  border: none;
+  outline: none;
+  border-left: 1px solid #ccc;
+  font-size: 18px;
 }
 </style>
 

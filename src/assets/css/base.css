@@ -60,9 +60,9 @@ a {
 
 ::-webkit-scrollbar {
     /*滚动条整体样式*/
-    width: 5px !important;
+    width: 0px !important;
     /*高宽分别对应横竖滚动条的尺寸*/
-    height: 5px !important;
+    height: 0px !important;
     background: #ffffff !important;
     cursor: pointer;
 }
